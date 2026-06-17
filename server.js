@@ -1,34 +1,123 @@
 const express = require("express");
-const app = express();
+const { Client, GatewayIntentBits } = require("discord.js");
 
+const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
-app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/public/top.html");
+// ======================
+// Discord Bot 起動
+// ======================
+const client = new Client({
+    intents: [GatewayIntentBits.Guilds]
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log("server start:", PORT);
+// ⚠️ 本番は絶対.envにする
+client.login(process.env.DISCORD_TOKEN);
+
+client.once("ready", () => {
+    console.log("Bot起動:", client.user.tag);
 });
 
 
-// ログイン（仮）
-app.post("/login", (req, res) => {
-    const { id, password } = req.body;
+// ======================
+// 提案API
+// ======================
+app.post("/send", async (req, res) => {
 
-    if (id === "tanaka" && password === "1234") {
-        res.json({ ok: true, id });
-    } else {
-        res.json({ ok: false });
+    try {
+        const data = req.body;
+
+        const channel = await client.channels.fetch("1509848164776022046");
+
+        let mentionText = "";
+
+        if (data.mention) {
+            mentionText = (data.members || [])
+                .filter(m => m.discordId && m.discordId.trim() !== "")
+                .map(m => `<@${m.discordId}>`)
+                .join(" ");
+        }
+
+        let startText = "";
+
+        if (data.startTime) {
+            const dt = new Date(data.startTime);
+            startText =
+                `${dt.getMonth() + 1}/${dt.getDate()} ` +
+                `${String(dt.getHours()).padStart(2, "0")}:` +
+                `${String(dt.getMinutes()).padStart(2, "0")}`;
+        }
+
+        const games = [...(data.games || [])];
+
+        if (data.other && data.other.trim() !== "") {
+            games.push(data.other);
+        }
+
+        const memberNames = (data.members || [])
+            .map(m => m.name)
+            .join(", ");
+
+        const proposer = "田中";
+
+        let message = "";
+
+        if (data.mention) {
+
+            message =
+                `${mentionText}\n\n` +
+                `${proposer}さんから${games.join("、")}の誘いが届いています。\n` +
+                (startText ? `提案時刻\n${startText}` : "");
+
+        } else {
+
+            message =
+                `${proposer}さんが遊びを提案しました。\n\n` +
+                `メンバー\n${memberNames}\n\n` +
+                (startText ? `提案時刻\n${startText}\n\n` : "") +
+                `提案内容\n${games.join("、")}`;
+        }
+
+        await channel.send(message);
+
+        console.log("Discord送信成功");
+
+        res.sendStatus(200);
+
+    } catch (err) {
+        console.error("送信失敗:", err);
+        res.sendStatus(500);
     }
 });
 
-// Discord送信（仮）
-app.post("/send", (req, res) => {
-    console.log("受信:", req.body);
-    res.sendStatus(200);
+
+// ======================
+// お問い合わせAPI
+// ======================
+app.post("/contact", async (req, res) => {
+
+    try {
+        const user = await client.users.fetch("1355547299014512866");
+
+        await user.send(`📩 お問い合わせ\n\n${req.body.message}`);
+
+        console.log("DM送信完了");
+
+        res.sendStatus(200);
+
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
 });
 
 
+// ======================
+// 起動
+// ======================
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log("APIサーバ起動:", PORT);
+});
