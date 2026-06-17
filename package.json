@@ -6,7 +6,13 @@
     "start": "node server.js"
   },
   "dependencies": {
+<<<<<<< HEAD
     "dotenv": "^17.4.2",
     "express": "^4.18.2"
   }
 }
+=======
+    "express": "^4.18.2"
+  }
+}
+>>>>>>> 178837fcb7d6ba1166b2bbca87f74c7050de3b66
