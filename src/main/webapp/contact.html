@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bon Appetit</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+	<div class="header-bar">
+	    <span id="loginStatus"></span>
+
+	    <div>
+	        <a href="top.html">ホーム</a>
+	        <a href="contact.html">お問い合わせ</a>
+	        <a href="#" id="loginLink" onclick="openLogin()">ログイン</a>
+	    </div>
+	</div>
+
+<!-- 背景 -->
+<div class="bg_pattern ZigZag_3D"></div>
+
+<div style="
+    margin-top:120px;
+    text-align:center;
+">
+
+    <h1>お問い合わせ</h1>
+
+    <p style="
+        font-size:20px;
+        line-height:1.8;
+    ">
+        匿名で田中になんでも送れます。<br>
+        サイトに関する要望、リアイベの打診などご自由に。
+    </p>
+
+    <textarea
+        id="message"
+        style="
+            width:600px;
+            height:200px;
+            margin-top:20px;
+            padding:10px;
+            font-size:18px;
+        "
+        placeholder="お問い合わせ内容を入力してください">
+    </textarea>
+
+    <br><br>
+
+    <button
+        onclick="sendContact()"
+        style="
+            font-size:24px;
+            padding:10px 40px;
+        ">
+        送信
+    </button>
+
+</div>
+
+
+
+
+<footer class="footer-bar">
+    © 2026 Bon Appetit 実行委員会
+</footer>
+
+
+
+<script>
+function sendContact() {
+
+    const message =
+        document.getElementById("message").value;
+
+    fetch("/BNPT/api/contact", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            message: message
+        })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error();
+
+        alert("送信しました");
+
+        document.getElementById("message").value = "";
+    })
+    .catch(() => {
+        alert("送信失敗");
+    });
+}
+</script>
+<div id="loginModal" style="
+    display:none;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.3);
+    z-index:9999;
+">
+
+    <h3>ログイン</h3>
+
+    <input id="loginId" placeholder="ID"><br><br>
+    <input id="loginPw" type="password" placeholder="PW"><br><br>
+
+    <button onclick="login()">ログイン</button>
+    <button onclick="closeLogin()">閉じる</button>
+
+	
+</div>
+
+<!-- JSは全部最後 -->
+	<script src="data.js"></script>
+	<script src="game.js"></script>
+	<script src="input.js"></script>
+	<script src="login.js"></script>
+</body>	
+</html>

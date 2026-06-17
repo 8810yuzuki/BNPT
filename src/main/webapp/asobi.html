@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bon Appetit</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+	<div class="header-bar">
+	    <span id="loginStatus"></span>
+
+	    <div>
+	        <a href="top.html">ホーム</a>
+	        <a href="contact.html">お問い合わせ</a>
+	        <a href="#" id="loginLink" onclick="openLogin()">ログイン</a>
+	    </div>
+	</div>
+
+<!-- 背景 -->
+<div class="bg_pattern ZigZag_3D"></div>
+
+<!-- メンバー -->
+<div class="member-box first-box">
+
+    <div style="display:flex; align-items:center; justify-content:space-between;">
+        <h2 style="margin:0;">招待メンバー</h2>
+
+        <label style="font-size:18px;">
+            <input type="checkbox" id="mentionFlag">
+            メンションする
+        </label>
+    </div>
+
+    <div id="userList"></div>
+
+</div>
+
+<!-- ゲーム -->
+<div class="member-box">
+
+    <h2>遊び候補</h2>
+
+    <div id="gameList"></div>
+
+    <div class="other-game">
+        <label for="otherGame">その他：</label>
+        <input type="text" id="otherGame" placeholder="自由に入力">
+    </div>
+
+    <div class="start-time">
+        <label for="startTime">開始日時：</label>
+        <input type="datetime-local" id="startTime">
+    </div>
+
+</div>
+
+<!-- 送信 -->
+<div class="submit-area">
+    <button class="submit-btn" onclick="submitData()">
+        送信
+    </button>
+</div>
+
+<footer class="footer-bar">
+    © 2026 Bon Appetit 実行委員会
+</footer>
+
+
+
+
+<div id="loginModal" style="
+    display:none;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.3);
+    z-index:9999;
+">
+
+    <h3>ログイン</h3>
+
+    <input id="loginId" placeholder="ID"><br><br>
+    <input id="loginPw" type="password" placeholder="PW"><br><br>
+
+    <button onclick="login()">ログイン</button>
+    <button onclick="closeLogin()">閉じる</button>
+	
+	
+</div>
+
+<script src="data.js"></script>
+<script src="asobi.js"></script>
+<script src="input.js"></script>
+<script src="login.js"></script>
+</body>
+
+</html>
