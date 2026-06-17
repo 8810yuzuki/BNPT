@@ -35,9 +35,24 @@ app.get("/", (req, res) => {
 app.post("/send", async (req, res) => {
 
     try {
+
         const data = req.body;
 
-        const channel = await client.channels.fetch("1509848164776022046");
+        const channel = await client.channels.fetch("1509848164776022046").catch(() => null);
+
+        if (!channel) {
+            return res.status(500).send("channel not found");
+        }
+
+        await channel.send("test");
+
+        res.sendStatus(200);
+
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+});
 
         let mentionText = "";
 
