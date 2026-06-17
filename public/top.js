@@ -10,14 +10,13 @@ function render() {
 
     if (!cards.length) return;
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < cards.length; i++) {
 
         const user = users[(start + i) % users.length];
 
         cards[i].innerHTML = `
-            <div style="text-align:center;">
-                <img src="${user.image || 'image/default.jpg'}"
-                     style="width:90%; height:150px; object-fit:cover; border-radius:20px;">
+            <div class="card-inner">
+                <img src="${user.image || 'image/default.jpg'}">
 
                 <h3>${user.name}</h3>
                 <p>誕生日: ${user.birthday}</p>

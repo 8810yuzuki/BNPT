@@ -201,47 +201,51 @@
 }
 
 /* 中身全体 */
+
 .card {
     width: 220px;
-    height: 260px;
+    height: 280px;
     background: white;
     border-radius: 16px;
     overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
 
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* 中身を全部自動で縮める */
 .card-inner {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-
-    justify-content: space-between; /* ←勝手に均等配置 */
-    align-items: center;
-
-    padding: 8px;
+    width: 100%;
+    height: 100%;
+    padding: 6px;
     box-sizing: border-box;
 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    gap: 4px;
     text-align: center;
 }
 
-/* 画像は枠にフィット */
+/* 画像は「上半分固定」 */
 .card-inner img {
     width: 100%;
-    height: 45%;
-    object-fit: cover;
+    height: 55%;
+    object-fit: cover; /* ←これが重要 */
     border-radius: 10px;
 }
 
-/* 文字は自動縮小気味 */
+/* 名前 */
 .card-inner h3 {
-    font-size: 14px;
-    margin: 2px 0;
+    font-size: 20px;
+    margin: 8px 0;
 }
 
+/* 誕生日・趣味 */
 .card-inner p {
-    font-size: 11px;
-    margin: 1px 0;
+    font-size: 18px;
+    margin: 0;
     line-height: 1.2;
 }
