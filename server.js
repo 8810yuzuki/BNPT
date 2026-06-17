@@ -1,4 +1,9 @@
 require("dotenv").config(); // ← 必ず最初
+
+client.on("debug", console.log);
+client.on("error", console.error);
+client.on("warn", console.warn);
+
 const express = require("express");
 const { Client, GatewayIntentBits } = require("discord.js");
 
@@ -24,8 +29,8 @@ client.once("ready", () => {
 });
 
 client.login(process.env.DISCORD_TOKEN)
-    .then(() => console.log("LOGIN開始OK"))
-    .catch(err => console.error("Discord login失敗:", err));
+    .then(() => console.log("LOGIN成功"))
+    .catch(console.error);
 
 process.on("unhandledRejection", console.error);
 process.on("uncaughtException", console.error);
