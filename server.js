@@ -21,6 +21,14 @@ client.once("ready", () => {
 });
 
 
+console.log("ROOT ROUTE LOADED");
+
+app.get("/", (req, res) => {
+    console.log("ROOT HIT");
+    res.sendFile(__dirname + "/public/top.html");
+});
+
+
 // ======================
 // 提案API
 // ======================
