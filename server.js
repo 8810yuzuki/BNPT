@@ -38,21 +38,12 @@ app.post("/send", async (req, res) => {
 
         const data = req.body;
 
-        const channel = await client.channels.fetch("1509848164776022046").catch(() => null);
+        const channel = await client.channels.fetch("1509848164776022046")
+            .catch(() => null);
 
         if (!channel) {
             return res.status(500).send("channel not found");
         }
-
-        await channel.send("test");
-
-        res.sendStatus(200);
-
-    } catch (err) {
-        console.error(err);
-        res.sendStatus(500);
-    }
-});
 
         let mentionText = "";
 
@@ -114,7 +105,6 @@ app.post("/send", async (req, res) => {
         res.sendStatus(500);
     }
 });
-
 
 // ======================
 // お問い合わせAPI
