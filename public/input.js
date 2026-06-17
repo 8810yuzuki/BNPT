@@ -35,7 +35,7 @@ function submitData() {
 		    mention
 		};
 
-    fetch("/BNPT/api/proposal", {
+    fetch("/send", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

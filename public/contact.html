@@ -78,7 +78,7 @@ function sendContact() {
     const message =
         document.getElementById("message").value;
 
-    fetch("/BNPT/api/contact", {
+    fetch("/contact", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
