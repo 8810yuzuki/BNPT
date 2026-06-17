@@ -94,10 +94,12 @@ app.post("/send", async (req, res) => {
                 `提案内容\n${games.join("、")}`;
         }
 
-        await channel.send(message);
+        // 💥 ここが変更ポイント
+        channel.send(message)
+            .then(() => console.log("Discord送信成功"))
+            .catch(err => console.error("Discord送信失敗:", err));
 
-        console.log("Discord送信成功");
-
+        // 💥 これを先に返す（重要）
         res.sendStatus(200);
 
     } catch (err) {
