@@ -1,7 +1,8 @@
-console.log("TOKEN存在:", !!process.env.DISCORD_TOKEN);
-require("dotenv").config();
+require("dotenv").config(); // ← 必ず最初
 const express = require("express");
 const { Client, GatewayIntentBits } = require("discord.js");
+
+console.log("TOKEN存在:", !!process.env.DISCORD_TOKEN);
 
 const app = express();
 app.use(express.json());
@@ -23,9 +24,8 @@ client.once("ready", () => {
 });
 
 client.login(process.env.DISCORD_TOKEN)
-    .catch(err => {
-        console.error("Discord login失敗:", err);
-    });
+    .then(() => console.log("LOGIN開始OK"))
+    .catch(err => console.error("Discord login失敗:", err));
 
 process.on("unhandledRejection", console.error);
 process.on("uncaughtException", console.error);
@@ -49,20 +49,13 @@ app.post("/send", async (req, res) => {
 
     try {
 
-        // 💥 bot未起動ガード
         if (!client.isReady() || !botReady) {
             return res.status(503).send("bot not ready");
         }
 
         const data = req.body;
 
-        let channel;
-        try {
-            channel = await client.channels.fetch("1509848164776022046");
-        } catch (err) {
-            console.error("channel fetch失敗:", err);
-            return res.status(500).send("channel error");
-        }
+        const channel = await client.channels.fetch("1509848164776022046");
 
         if (!channel) {
             return res.status(500).send("channel not found");
@@ -114,13 +107,9 @@ app.post("/send", async (req, res) => {
                 `提案内容\n${games.join("、")}`;
         }
 
-        try {
-            await channel.send(message);
-            console.log("Discord送信成功");
-        } catch (err) {
-            console.error("send失敗:", err);
-            return res.status(500).send("send failed");
-        }
+        await channel.send(message);
+
+        console.log("Discord送信成功");
 
         return res.sendStatus(200);
 
