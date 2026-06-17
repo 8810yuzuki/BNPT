@@ -178,3 +178,47 @@
         linear-gradient(315deg, #ffc10755 25%, transparent 25%) 0 0/40px 40px,
         linear-gradient(45deg, #ffc107 25%, #ffe9a7 25%) 0 0/40px 40px;
 }
+#cards {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* カード本体 */
+.card {
+    width: 220px;
+    height: 320px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
+    overflow: hidden; /* ←これ超重要 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 中身 */
+.card-inner {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    gap: 6px;
+}
+
+/* 画像 */
+.card-inner img {
+    width: 90%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 12px;
+}
