@@ -4,6 +4,16 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
+app.get("/", (req, res) => {
+    res.sendFile(__dirname + "/public/top.html");
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log("server start:", PORT);
+});
+
+
 // ログイン（仮）
 app.post("/login", (req, res) => {
     const { id, password } = req.body;
@@ -21,7 +31,4 @@ app.post("/send", (req, res) => {
     res.sendStatus(200);
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log("server start:", PORT);
-});
+
