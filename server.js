@@ -1,24 +1,27 @@
-require("dotenv").config(); // ← 必ず最初
+require("dotenv").config();
 
 const express = require("express");
 const { Client, GatewayIntentBits } = require("discord.js");
 
-console.log("TOKEN存在:", !!process.env.DISCORD_TOKEN);
-
 const app = express();
 app.use(express.json());
 app.use(express.static("public"));
+
+console.log("TOKEN存在:", !!process.env.DISCORD_TOKEN);
 
 /* ======================
    Discord Bot
 ====================== */
 
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds]
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent
+    ]
 });
 
-/* 👇 client作った後にイベントを書く */
-
+/* デバッグログ（接続状況確認） */
 client.on("debug", console.log);
 client.on("error", console.error);
 client.on("warn", console.warn);
@@ -30,9 +33,10 @@ client.once("ready", () => {
     console.log("Bot起動:", client.user.tag);
 });
 
+/* ログイン */
 client.login(process.env.DISCORD_TOKEN)
     .then(() => console.log("LOGIN成功"))
-    .catch(console.error);
+    .catch(err => console.error("LOGIN失敗:", err));
 
 process.on("unhandledRejection", console.error);
 process.on("uncaughtException", console.error);
