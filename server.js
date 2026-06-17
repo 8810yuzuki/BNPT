@@ -15,25 +15,25 @@ console.log("TOKEN存在:", !!process.env.DISCORD_TOKEN);
 
 const client = new Client({
     intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
+        GatewayIntentBits.Guilds
     ]
 });
 
-/* デバッグログ（接続状況確認） */
+/* デバッグ */
 client.on("debug", console.log);
 client.on("error", console.error);
 client.on("warn", console.warn);
+client.on("shardError", console.error);
 
 let botReady = false;
 
+/* ready */
 client.once("ready", () => {
     botReady = true;
     console.log("Bot起動:", client.user.tag);
 });
 
-/* ログイン */
+/* login */
 client.login(process.env.DISCORD_TOKEN)
     .then(() => console.log("LOGIN成功"))
     .catch(err => console.error("LOGIN失敗:", err));
@@ -44,8 +44,6 @@ process.on("uncaughtException", console.error);
 /* ======================
    ルート
 ====================== */
-
-console.log("ROOT ROUTE LOADED");
 
 app.get("/", (req, res) => {
     console.log("ROOT HIT");
@@ -60,13 +58,20 @@ app.post("/send", async (req, res) => {
 
     try {
 
+        // 💥 bot未接続ガード
         if (!client.isReady() || !botReady) {
             return res.status(503).send("bot not ready");
         }
 
         const data = req.body;
 
-        const channel = await client.channels.fetch("1509848164776022046");
+        let channel;
+        try {
+            channel = await client.channels.fetch("1509848164776022046");
+        } catch (err) {
+            console.error("channel fetch失敗:", err);
+            return res.status(500).send("channel error");
+        }
 
         if (!channel) {
             return res.status(500).send("channel not found");
@@ -103,24 +108,17 @@ app.post("/send", async (req, res) => {
 
         const proposer = "田中";
 
-        let message = "";
+        let message = data.mention
+            ? `${mentionText}\n\n${proposer}さんから${games.join("、")}の誘いが届いています。\n${startText ? `提案時刻\n${startText}` : ""}`
+            : `${proposer}さんが遊びを提案しました。\n\nメンバー\n${memberNames}\n\n${startText ? `提案時刻\n${startText}\n\n` : ""}提案内容\n${games.join("、")}`;
 
-        if (data.mention) {
-            message =
-                `${mentionText}\n\n` +
-                `${proposer}さんから${games.join("、")}の誘いが届いています。\n` +
-                (startText ? `提案時刻\n${startText}` : "");
-        } else {
-            message =
-                `${proposer}さんが遊びを提案しました。\n\n` +
-                `メンバー\n${memberNames}\n\n` +
-                (startText ? `提案時刻\n${startText}\n\n` : "") +
-                `提案内容\n${games.join("、")}`;
+        try {
+            await channel.send(message);
+            console.log("Discord送信成功");
+        } catch (err) {
+            console.error("send失敗:", err);
+            return res.status(500).send("send failed");
         }
-
-        await channel.send(message);
-
-        console.log("Discord送信成功");
 
         return res.sendStatus(200);
 
