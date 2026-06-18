@@ -1,81 +1,31 @@
 require("dotenv").config();
 
 const express = require("express");
-const { Client, GatewayIntentBits } = require("discord.js");
 
 const app = express();
+
 app.use(express.json());
 app.use(express.static("public"));
 
-console.log("TOKEN存在:", !!process.env.DISCORD_TOKEN);
-
-/* ======================
-   Discord Bot
-====================== */
-
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds
-    ]
-});
-
-/* デバッグ */
-client.on("debug", console.log);
-client.on("error", console.error);
-client.on("warn", console.warn);
-client.on("shardError", console.error);
-
-let botReady = false;
-
-/* ready */
-client.once("ready", () => {
-    botReady = true;
-    console.log("Bot起動:", client.user.tag);
-});
-
-/* login */
-client.login(process.env.DISCORD_TOKEN)
-    .then(() => console.log("LOGIN成功"))
-    .catch(err => console.error("LOGIN失敗:", err));
-
-process.on("unhandledRejection", console.error);
-process.on("uncaughtException", console.error);
+const WEBHOOK_URL = process.env.WEBHOOK_URL;
 
 /* ======================
    ルート
 ====================== */
 
 app.get("/", (req, res) => {
-    console.log("ROOT HIT");
     res.sendFile(__dirname + "/public/top.html");
 });
 
 /* ======================
-   提案API
+   提案API（Webhook送信）
 ====================== */
 
 app.post("/send", async (req, res) => {
 
     try {
 
-        // 💥 bot未接続ガード
-        if (!client.isReady() || !botReady) {
-            return res.status(503).send("bot not ready");
-        }
-
         const data = req.body;
-
-        let channel;
-        try {
-            channel = await client.channels.fetch("1509848164776022046");
-        } catch (err) {
-            console.error("channel fetch失敗:", err);
-            return res.status(500).send("channel error");
-        }
-
-        if (!channel) {
-            return res.status(500).send("channel not found");
-        }
 
         let mentionText = "";
 
@@ -104,21 +54,28 @@ app.post("/send", async (req, res) => {
 
         const memberNames = (data.members || [])
             .map(m => m.name)
-            .join(", ");
+            .join("、");
 
-        const proposer = "田中";
+        const message = data.mention
+            ? `${mentionText}\n\n🎮 遊びの提案\n${data.mention ? "メンションあり\n" : ""}メンバー: ${memberNames}\n内容: ${games.join("、")}\n${startText ? `日時: ${startText}` : ""}`
+            : `🎮 遊びの提案\n\nメンバー: ${memberNames}\n内容: ${games.join("、")}\n${startText ? `日時: ${startText}\n\n` : ""}`;
 
-        let message = data.mention
-            ? `${mentionText}\n\n${proposer}さんから${games.join("、")}の誘いが届いています。\n${startText ? `提案時刻\n${startText}` : ""}`
-            : `${proposer}さんが遊びを提案しました。\n\nメンバー\n${memberNames}\n\n${startText ? `提案時刻\n${startText}\n\n` : ""}提案内容\n${games.join("、")}`;
+        const result = await fetch(WEBHOOK_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                content: message
+            })
+        });
 
-        try {
-            await channel.send(message);
-            console.log("Discord送信成功");
-        } catch (err) {
-            console.error("send失敗:", err);
-            return res.status(500).send("send failed");
+        if (!result.ok) {
+            console.error("Webhook失敗:", await result.text());
+            return res.status(500).send("webhook failed");
         }
+
+        console.log("送信成功");
 
         return res.sendStatus(200);
 
@@ -129,22 +86,26 @@ app.post("/send", async (req, res) => {
 });
 
 /* ======================
-   お問い合わせ
+   お問い合わせ（そのままWebhook化も可）
 ====================== */
 
 app.post("/contact", async (req, res) => {
 
     try {
 
-        if (!client.isReady()) {
-            return res.status(503).send("bot not ready");
+        const result = await fetch(WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                content: `📩 お問い合わせ\n\n${req.body.message}`
+            })
+        });
+
+        if (!result.ok) {
+            return res.status(500).send("contact failed");
         }
 
-        const user = await client.users.fetch("1355547299014512866");
-
-        await user.send(`📩 お問い合わせ\n\n${req.body.message}`);
-
-        console.log("DM送信完了");
+        console.log("問い合わせ送信成功");
 
         return res.sendStatus(200);
 
@@ -161,5 +122,5 @@ app.post("/contact", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log("APIサーバ起動:", PORT);
+    console.log("API起動:", PORT);
 });
