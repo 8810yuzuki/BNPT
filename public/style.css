@@ -122,7 +122,7 @@
 .member-box h2 {
     margin: 0 0 20px 0;
     text-align: left;
-    font-size: 32px;
+    font-size: clamp(18px, 3vw, 32px);
 }
 
 /*時間*/
@@ -418,12 +418,13 @@ input[type="datetime-local"] {
 
     /* メンバー */
     #userList {
-        grid-template-columns: 1fr;
-        gap: 12px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
+
     .user-checkbox {
-        font-size: 22px;
+        font-size: 18px;
     }
 
     .user-checkbox input[type="checkbox"] {
