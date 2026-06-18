@@ -50,64 +50,57 @@ const users = [
         hobby: "冷笑",
         image: "image/runya.jpg",
         discordId: "1442871972685025341"
-    }
-{
+    },
+    {
         name: "りお",
         birthday: "08-22",
         hobby: "不明",
         image: "image/rio.jpg",
         discordId: "1028897226665230417"
     },
-{
+    {
         name: "アル中",
-        birthday: "不明」",
+        birthday: "不明",
         hobby: "残業",
         image: "image/al.jpg",
         discordId: "1233993634110636045"
     },
-{
+    {
         name: "めんちゅ",
         birthday: "09-18",
         hobby: "ディズニー",
         image: "image/men.jpg",
         discordId: "1218582551883419769"
     },
-{
+    {
         name: "つばめくん",
         birthday: "不明",
         hobby: "不明",
         image: "image/tsuba.jpg",
         discordId: "1269349290417848423"
     },
-{
+    {
         name: "ニック",
         birthday: "不明",
         hobby: "不明",
         image: "image/nick.jpg",
         discordId: "1032309489933746226"
     },
-{
+    {
         name: "ぎんちゃん",
         birthday: "07-18",
         hobby: "不明",
         image: "image/gin.jpg",
         discordId: "690165559156932608"
     },
-{
+    {
         name: "ねむ",
         birthday: "不明",
         hobby: "不明",
         image: "image/nemu.jpg",
         discordId: "690165559156932608"
     }
-
-
-
-
-
-
 ];
-
 
 const games = [
     { name: "LOL" },
@@ -119,6 +112,3 @@ const games = [
     { name: "MineCraft" },
     { name: "Over Watch" }
 ];
-
-
-
