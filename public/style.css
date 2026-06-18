@@ -249,3 +249,261 @@
     margin: 0;
     line-height: 1.2;
 }
+
+/* ======================
+   レスポンシブ対応
+====================== */
+
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* 共通文字サイズ */
+h1 {
+    font-size: clamp(28px, 4vw, 48px);
+}
+
+h2 {
+    font-size: clamp(22px, 3vw, 32px);
+}
+
+p,
+label,
+span,
+input,
+textarea,
+button {
+    font-size: clamp(14px, 2vw, 20px);
+}
+
+/* カード折り返し */
+#cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* カードサイズ自動 */
+.card {
+    width: min(220px, 90vw);
+}
+
+/* テキスト入力系 */
+textarea,
+input[type="text"],
+input[type="datetime-local"] {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* ======================
+   TOPページ
+====================== */
+
+.top-title{
+    text-align:center;
+    font-size:clamp(36px,8vw,80px);
+    margin-top:30px;
+}
+
+.top-subtitle{
+    text-align:center;
+    font-size:clamp(14px,2.5vw,23px);
+    line-height:1.8;
+
+    max-width:1000px;
+    margin:30px auto 0 auto;
+
+    padding:0 15px;
+}
+
+.carousel-wrap{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+
+    margin-top:50px;
+}
+
+/* 遊び提案リンク */
+
+.asobi-link-wrap{
+    text-align:center;
+    margin-top:30px;
+    margin-bottom:100px;
+}
+
+.asobi-link{
+    display:inline-block;
+
+    font-size:clamp(24px,5vw,40px);
+
+    color:#0066cc;
+    text-decoration:underline;
+    font-weight:bold;
+}
+
+/* カード */
+
+.card{
+    width:min(300px,90vw);
+    height:300px;
+
+    border-radius:20px;
+    border:1px solid #ccc;
+
+    font-size:24px;
+
+    background:white;
+
+    box-shadow:0 2px 8px rgba(0,0,0,0.2);
+
+    overflow:hidden;
+}
+
+/* ======================
+   タブレット
+====================== */
+
+@media (max-width: 1024px) {
+
+    #userList,
+    #gameList {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .user-checkbox,
+    .game-checkbox {
+        font-size: 24px;
+    }
+}
+
+/* ======================
+   スマホ
+====================== */
+
+@media (max-width: 768px) {
+
+    /* ヘッダー */
+    .header-bar {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .header-bar a,
+    .header-bar #loginLink {
+        margin-left: 10px;
+    }
+
+    /* ボックス */
+    .member-box {
+        width: 95%;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .first-box {
+        margin-top: 130px;
+    }
+
+    /* メンバー */
+    #userList {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .user-checkbox {
+        font-size: 22px;
+    }
+
+    .user-checkbox input[type="checkbox"] {
+        transform: scale(1.5);
+    }
+
+    /* ゲーム */
+    #gameList {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .game-checkbox {
+        font-size: 22px;
+    }
+
+    .game-checkbox input[type="checkbox"] {
+        transform: scale(1.5);
+    }
+
+    /* その他ゲーム */
+    .other-game,
+    .start-time {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .other-game input,
+    .start-time input {
+        width: 100%;
+        height: 42px;
+        margin-left: 0;
+    }
+
+    /* 送信ボタン */
+    .submit-btn {
+        width: 100%;
+        max-width: 400px;
+
+        font-size: 22px;
+
+        padding: 14px;
+    }
+
+    /* カード */
+    .card {
+        width: 95%;
+        max-width: 320px;
+        height: auto;
+    }
+
+    .card-inner h3 {
+        font-size: 18px;
+    }
+
+    .card-inner p {
+        font-size: 15px;
+    }
+
+    /* フッター */
+    .footer-bar {
+        font-size: 14px;
+        padding: 10px;
+    }
+.carousel-wrap{
+    gap:8px;
+}
+
+#cards{
+    gap:10px;
+}
+
+.card{
+    width:95%;
+    max-width:320px;
+}
+
+.top-subtitle{
+    padding:0 20px;
+}
+}
