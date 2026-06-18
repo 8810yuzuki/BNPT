@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const express = require("express");
 
 const app = express();
@@ -7,7 +6,8 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
-const WEBHOOK_URL = process.env.WEBHOOK_URL;
+const SEND_WEBHOOK = process.env.SEND_WEBHOOK;
+const CONTACT_WEBHOOK = process.env.CONTACT_WEBHOOK;
 
 /* ======================
    ルート
@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 });
 
 /* ======================
-   提案API（Webhook送信）
+   提案API
 ====================== */
 
 app.post("/send", async (req, res) => {
@@ -27,14 +27,12 @@ app.post("/send", async (req, res) => {
 
         const data = req.body;
 
-        let mentionText = "";
-
-        if (data.mention) {
-            mentionText = (data.members || [])
-                .filter(m => m.discordId && m.discordId.trim() !== "")
+        const mentionText = data.mention
+            ? (data.members || [])
+                .filter(m => m.discordId)
                 .map(m => `<@${m.discordId}>`)
-                .join(" ");
-        }
+                .join(" ")
+            : "";
 
         let startText = "";
 
@@ -48,7 +46,7 @@ app.post("/send", async (req, res) => {
 
         const games = [...(data.games || [])];
 
-        if (data.other && data.other.trim() !== "") {
+        if (data.other?.trim()) {
             games.push(data.other);
         }
 
@@ -56,48 +54,48 @@ app.post("/send", async (req, res) => {
             .map(m => m.name)
             .join("、");
 
-        const message = data.mention
-            ? `${mentionText}\n\n🎮 遊びの提案\n${data.mention ? "メンションあり\n" : ""}メンバー: ${memberNames}\n内容: ${games.join("、")}\n${startText ? `日時: ${startText}` : ""}`
-            : `🎮 遊びの提案\n\nメンバー: ${memberNames}\n内容: ${games.join("、")}\n${startText ? `日時: ${startText}\n\n` : ""}`;
+        const message =
+            `🎮 遊びの提案\n\n` +
+            `メンバー: ${memberNames}\n` +
+            `内容: ${games.join("、")}\n` +
+            (startText ? `日時: ${startText}\n` : "") +
+            (mentionText ? `\n${mentionText}` : "");
 
-        const result = await fetch(WEBHOOK_URL, {
+        const result = await fetch(SEND_WEBHOOK, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                content: message
-            })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ content: message })
         });
 
         if (!result.ok) {
-            console.error("Webhook失敗:", await result.text());
-            return res.status(500).send("webhook failed");
+            console.error(await result.text());
+            return res.status(500).send("send failed");
         }
 
-        console.log("送信成功");
-
+        console.log("提案送信成功");
         return res.sendStatus(200);
 
     } catch (err) {
-        console.error("送信失敗:", err);
+        console.error(err);
         return res.sendStatus(500);
     }
 });
 
 /* ======================
-   お問い合わせ（そのままWebhook化も可）
+   お問い合わせ
 ====================== */
 
 app.post("/contact", async (req, res) => {
 
     try {
 
-        const result = await fetch(WEBHOOK_URL, {
+        const message = req.body.message;
+
+        const result = await fetch(CONTACT_WEBHOOK, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                content: `📩 お問い合わせ\n\n${req.body.message}`
+                content: `📩 お問い合わせ\n\n${message}`
             })
         });
 
@@ -106,7 +104,6 @@ app.post("/contact", async (req, res) => {
         }
 
         console.log("問い合わせ送信成功");
-
         return res.sendStatus(200);
 
     } catch (err) {
