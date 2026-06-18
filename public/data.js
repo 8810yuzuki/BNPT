@@ -99,7 +99,7 @@ const users = [
         hobby: "不明",
         image: "image/nemu.jpg",
         discordId: "690165559156932608"
-    },
+    }
 
 
 
