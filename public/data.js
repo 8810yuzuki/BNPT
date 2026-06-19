@@ -138,7 +138,7 @@ const users = [
         hobby: "不明",
         image: "image/rinka.jpg",
         discordId: "1316778478695092235"
-    },
+    }
 
 ];
 
