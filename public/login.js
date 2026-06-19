@@ -72,11 +72,12 @@ if (status) {
 
     status.style.display = "inline";
 
-    status.innerHTML =
-        `ログイン中：${userName}
-        <a href="#" onclick="logout()" style="color:white;margin-left:10px;">
-            [ログアウト]
-        </a>`;
+status.innerHTML = `
+ログイン中：${userName}
+<a href="#" onclick="logout()" style="color:white;margin-left:10px;">
+    [ログアウト]
+</a>
+`;
 }
 ```
 
