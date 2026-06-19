@@ -1,60 +1,115 @@
-
 function openLogin() {
-    document.getElementById("loginModal").style.display = "block";
+document.getElementById("loginModal").style.display = "block";
 }
 
 function closeLogin() {
-    document.getElementById("loginModal").style.display = "none";
+document.getElementById("loginModal").style.display = "none";
 }
 
-// ===== ログイン情報 =====
-const usersDB = {
-    tanaka: "1234",
-    richa: "1111",
-    chopao: "2222",
-    riu: "3333"
-};
+/* ======================
+ログイン処理
+====================== */
 
-// ===== ログイン処理 =====
 function login() {
 
-    const id = document.getElementById("loginId").value;
-    const pw = document.getElementById("loginPw").value;
+```
+const id = document.getElementById("loginId").value;
+const pw = document.getElementById("loginPw").value;
 
-    if (usersDB[id] && usersDB[id] === pw) {
+fetch("/login", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        id,
+        pw
+    })
+})
+.then(res => {
 
-        localStorage.setItem("userId", id);
-
-        setLoginUI(id);
-        closeLogin();
-
-    } else {
-        alert("ログイン失敗");
+    if (!res.ok) {
+        throw new Error();
     }
+
+    return res.json();
+})
+.then(user => {
+
+    localStorage.setItem("userId", user.id);
+    localStorage.setItem("userName", user.name);
+
+    setLoginUI(user.name);
+
+    closeLogin();
+})
+.catch(err => {
+
+    console.error(err);
+
+    alert("ログイン失敗");
+});
+```
+
 }
 
+/* ======================
+UI切り替え
+====================== */
 
-// ===== UI切り替え =====
-function setLoginUI(user) {
+function setLoginUI(userName) {
 
-    const link = document.getElementById("loginLink");
-    if (link) link.style.display = "none";
+```
+const link = document.getElementById("loginLink");
 
-    const status = document.getElementById("loginStatus");
-    if (status) {
-        status.style.display = "inline";
-        status.textContent = "ログイン中：" + user;
-    }
+if (link) {
+    link.style.display = "none";
 }
 
+const status = document.getElementById("loginStatus");
 
-// ===== 再読み込み復元 =====
+if (status) {
+
+    status.style.display = "inline";
+
+    status.innerHTML =
+        `ログイン中：${userName}
+         <a href="#" onclick="logout()" style="color:white;margin-left:10px;">
+            [ログアウト]
+         </a>`;
+}
+```
+
+}
+
+/* ======================
+ログアウト
+====================== */
+
+function logout() {
+
+```
+localStorage.removeItem("userId");
+localStorage.removeItem("userName");
+
+location.reload();
+```
+
+}
+
+/* ======================
+再読み込み復元
+====================== */
+
 window.addEventListener("DOMContentLoaded", () => {
 
-    const user = localStorage.getItem("userId");
+```
+const userName =
+    localStorage.getItem("userName");
 
-    if (user) {
-        setLoginUI(user);
-    }
+if (userName) {
+    setLoginUI(userName);
+}
+```
 
 });
