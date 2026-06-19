@@ -74,9 +74,9 @@ if (status) {
 
     status.innerHTML =
         `ログイン中：${userName}
-         <a href="#" onclick="logout()" style="color:white;margin-left:10px;">
+        <a href="#" onclick="logout()" style="color:white;margin-left:10px;">
             [ログアウト]
-         </a>`;
+        </a>`;
 }
 ```
 
