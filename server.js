@@ -1,57 +1,5 @@
-require("dotenv").config();
-
-const express = require("express");
-
-const app = express();
-
-app.use(express.json());
-app.use(express.static("public"));
-
-const SEND_WEBHOOK = process.env.SEND_WEBHOOK;
-const CONTACT_WEBHOOK = process.env.CONTACT_WEBHOOK;
-
-/* ======================
-ログイン情報
-====================== */
-
-const accounts = [
-{ id: "tanaka", pw: "1111", name: "田中" },
-{ id: "richa", pw: "2222", name: "りチャ" },
-{ id: "chopao", pw: "3333", name: "ちょぱおう" },
-{ id: "riu", pw: "4444", name: "りう" },
-{ id: "inogani", pw: "5555", name: "いのがに" },
-{ id: "haruyuki", pw: "6666", name: "はるゆき" },
-{ id: "mone", pw: "7777", name: "もねちやん" },
-{ id: "runya", pw: "8888", name: "るにやーん" },
-{ id: "rio", pw: "9999", name: "りお" },
-{ id: "alchu", pw: "1010", name: "アル中" },
-{ id: "menchu", pw: "1112", name: "めんちゅ" },
-{ id: "tsubame", pw: "1212", name: "つばめくん" },
-{ id: "nick", pw: "1313", name: "ニック" },
-{ id: "gin", pw: "1414", name: "ぎんちゃん" },
-{ id: "nemu", pw: "1515", name: "ねむ" },
-{ id: "gordon", pw: "1616", name: "ゴードン・ラムゼイ" },
-{ id: "sakata", pw: "1717", name: "坂田" },
-{ id: "ryoryo", pw: "1818", name: "りょりょ" },
-{ id: "rana", pw: "1919", name: "らな" },
-{ id: "rinka", pw: "2020", name: "りんか" }
-];
-
-/* ======================
-ルート
-====================== */
-
-app.get("/", (req, res) => {
-res.sendFile(__dirname + "/public/top.html");
-});
-
-/* ======================
-ログインAPI
-====================== */
-
 app.post("/login", (req, res) => {
 
-```
 const { id, pw } = req.body;
 
 const account = accounts.find(
@@ -66,7 +14,6 @@ return res.json({
     id: account.id,
     name: account.name
 });
-```
 
 });
 
@@ -76,7 +23,6 @@ return res.json({
 
 app.post("/send", async (req, res) => {
 
-```
 try {
 
     const data = req.body;
@@ -151,7 +97,6 @@ try {
 
     return res.sendStatus(500);
 }
-```
 
 });
 
@@ -161,7 +106,6 @@ try {
 
 app.post("/contact", async (req, res) => {
 
-```
 try {
 
     const message = req.body.message;
@@ -191,16 +135,5 @@ try {
 
     return res.sendStatus(500);
 }
-```
 
-});
-
-/* ======================
-起動
-====================== */
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-console.log("API起動:", PORT);
 });
