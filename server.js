@@ -111,12 +111,25 @@ try {
     const proposer =
         data.proposer || "誰か";
 
-    const message =
-        "🎮 " + proposer + "さんから遊びの提案\n\n" +
-        "メンバー: " + memberNames + "\n" +
-        "内容: " + games.join("、") + "\n" +
-        (startText ? "日時: " + startText + "\n" : "") +
-        (mentionText ? "\n" + mentionText : "");
+    let message = "";
+
+    if (data.mention) {
+
+        message =
+            mentionText + "\n\n" +
+            proposer + "さんが提案しました。\n\n" +
+            "内容：" + games.join("、") + "\n" +
+            (startText ? "日時：" + startText + "\n" : "");
+
+    } else {
+
+        message =
+            proposer + "さんが提案しました。\n\n" +
+            "メンバー：" + memberNames + "\n" +
+            "内容：" + games.join("、") + "\n" +
+            (startText ? "日時：" + startText + "\n" : "");
+
+    }
 
     const result = await fetch(SEND_WEBHOOK, {
         method: "POST",
