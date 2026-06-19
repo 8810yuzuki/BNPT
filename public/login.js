@@ -1,116 +1,100 @@
 function openLogin() {
-document.getElementById("loginModal").style.display = "block";
+    document.getElementById("loginModal").style.display = "block";
 }
 
 function closeLogin() {
-document.getElementById("loginModal").style.display = "none";
+    document.getElementById("loginModal").style.display = "none";
 }
 
 /* ======================
-ログイン処理
+   ログイン処理
 ====================== */
 
 function login() {
 
-```
-const id = document.getElementById("loginId").value;
-const pw = document.getElementById("loginPw").value;
+    const id = document.getElementById("loginId").value;
+    const pw = document.getElementById("loginPw").value;
 
-fetch("/login", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        id,
-        pw
+    fetch("/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: id,
+            pw: pw
+        })
     })
-})
-.then(res => {
+    .then(res => {
 
-    if (!res.ok) {
-        throw new Error();
-    }
+        if (!res.ok) {
+            throw new Error("login failed");
+        }
 
-    return res.json();
-})
-.then(user => {
+        return res.json();
+    })
+    .then(user => {
 
-    localStorage.setItem("userId", user.id);
-    localStorage.setItem("userName", user.name);
+        localStorage.setItem("userId", user.id);
+        localStorage.setItem("userName", user.name);
 
-    setLoginUI(user.name);
+        setLoginUI(user.name);
 
-    closeLogin();
-})
-.catch(err => {
+        closeLogin();
+    })
+    .catch(err => {
 
-    console.error(err);
+        console.error(err);
 
-    alert("ログイン失敗");
-});
-```
-
+        alert("ログイン失敗");
+    });
 }
 
 /* ======================
-UI切り替え
+   UI切り替え
 ====================== */
 
 function setLoginUI(userName) {
 
-```
-const link = document.getElementById("loginLink");
+    const link = document.getElementById("loginLink");
 
-if (link) {
-    link.style.display = "none";
-}
+    if (link) {
+        link.style.display = "none";
+    }
 
-const status = document.getElementById("loginStatus");
+    const status = document.getElementById("loginStatus");
 
-if (status) {
+    if (status) {
 
-    status.style.display = "inline";
+        status.style.display = "inline";
 
-status.innerHTML = `
-ログイン中：${userName}
-<a href="#" onclick="logout()" style="color:white;margin-left:10px;">
-    [ログアウト]
-</a>
-`;
-}
-```
-
+        status.innerHTML =
+            'ログイン中：' + userName +
+            ' <a href="#" onclick="logout()" style="color:white;margin-left:10px;">[ログアウト]</a>';
+    }
 }
 
 /* ======================
-ログアウト
+   ログアウト
 ====================== */
 
 function logout() {
 
-```
-localStorage.removeItem("userId");
-localStorage.removeItem("userName");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
 
-location.reload();
-```
-
+    location.reload();
 }
 
 /* ======================
-再読み込み復元
+   再読み込み復元
 ====================== */
 
 window.addEventListener("DOMContentLoaded", () => {
 
-```
-const userName =
-    localStorage.getItem("userName");
+    const userName = localStorage.getItem("userName");
 
-if (userName) {
-    setLoginUI(userName);
-}
-```
-
+    if (userName) {
+        setLoginUI(userName);
+    }
 });
