@@ -58,7 +58,7 @@ const users = [
     {
         name: "りお",
         birthday: "08-22",
-        hobby: "不明",
+        hobby: "井上 瑞稀",
         image: "image/rio.jpg",
         discordId: "1028897226665230417"
     },
