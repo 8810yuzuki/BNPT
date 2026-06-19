@@ -9,13 +9,15 @@ const users = [
     {
         name: "りチャ",
         birthday: "09-29",
-        hobby: "佐間 龍斗",
+        hobby: "作間 龍斗",
+	image: "image/richa.jpg",
         discordId: "1350650282429907046"
     },
     {
         name: "ちょぱおう",
         birthday: "12-31",
         hobby: "天使さんごっこ",
+	image: "image/ruru.jpg",
         discordId: "1200959211698401330"
     },
     {
@@ -103,7 +105,7 @@ const users = [
         discordId: "690165559156932608"
     },
 {
-        name: "れな",
+        name: "ゴードン・ラムゼイ",
         birthday: "不明",
         hobby: "不明",
         image: "image/rena.jpg",
@@ -115,6 +117,13 @@ const users = [
         hobby: "不明",
         image: "image/sakata.jpg",
         discordId: "1180978164390961192"
+    },
+{
+	name: "りょりょ",
+        birthday: "不明",
+        hobby: "不明",
+        image: "image/ryo.jpg",
+        discordId: "878733031236595792"
     }
 ];
 
