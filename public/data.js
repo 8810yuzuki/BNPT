@@ -22,12 +22,14 @@ const users = [
         name: "りう",
         birthday: "03-13",
         hobby: "嵐",
+        image: "image/riu.jpg",
         discordId: "1281107106585509918"
     },
     {
         name: "いのがに",
         birthday: "09-17",
         hobby: "ギター",
+	image: "image/ino.jpg",
         discordId: "972433783070523413"
     },
     {
@@ -100,6 +102,14 @@ const users = [
         image: "image/nemu.jpg",
         discordId: "690165559156932608"
     }
+{
+        name: "れな",
+        birthday: "不明",
+        hobby: "不明",
+        image: "image/rena.jpg",
+        discordId: "1372584374142505077"
+    },
+
 ];
 
 const games = [
