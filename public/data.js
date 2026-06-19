@@ -101,7 +101,7 @@ const users = [
         hobby: "不明",
         image: "image/nemu.jpg",
         discordId: "690165559156932608"
-    }
+    },
 {
         name: "れな",
         birthday: "不明",
@@ -109,7 +109,12 @@ const users = [
         image: "image/rena.jpg",
         discordId: "1372584374142505077"
     },
-
+  name: "坂田",
+        birthday: "不明",
+        hobby: "不明",
+        image: "image/sakata.jpg",
+        discordId: "1180978164390961192"
+    },
 ];
 
 const games = [
