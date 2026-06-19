@@ -124,7 +124,22 @@ const users = [
         hobby: "不明",
         image: "image/ryo.jpg",
         discordId: "878733031236595792"
-    }
+    }.
+{
+	name: "らな",
+        birthday: "不明",
+        hobby: "不明",
+        image: "image/rana.jpg",
+        discordId: "1400344604527824968"
+    },
+{
+	name: "りんか",
+        birthday: "不明",
+        hobby: "不明",
+        image: "image/rinka.jpg",
+        discordId: "1316778478695092235"
+    },
+
 ];
 
 const games = [
