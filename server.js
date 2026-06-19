@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const express = require("express");
 
 const app = express();
@@ -24,7 +25,7 @@ const accounts = [
 { id: "runya", pw: "8888", name: "るにやーん" },
 { id: "rio", pw: "9999", name: "りお" },
 { id: "alchu", pw: "1010", name: "アル中" },
-{ id: "menchu", pw: "1111", name: "めんちゅ" },
+{ id: "menchu", pw: "1112", name: "めんちゅ" },
 { id: "tsubame", pw: "1212", name: "つばめくん" },
 { id: "nick", pw: "1313", name: "ニック" },
 { id: "gin", pw: "1414", name: "ぎんちゃん" },
@@ -83,7 +84,7 @@ try {
     const mentionText = data.mention
         ? (data.members || [])
             .filter(m => m.discordId)
-            .map(m => `<@${m.discordId}>`)
+            .map(m => "<@" + m.discordId + ">")
             .join(" ")
         : "";
 
@@ -94,14 +95,15 @@ try {
         const dt = new Date(data.startTime);
 
         startText =
-            `${dt.getMonth() + 1}/${dt.getDate()} ` +
-            `${String(dt.getHours()).padStart(2, "0")}:` +
-            `${String(dt.getMinutes()).padStart(2, "0")}`;
+            (dt.getMonth() + 1) + "/" +
+            dt.getDate() + " " +
+            String(dt.getHours()).padStart(2, "0") + ":" +
+            String(dt.getMinutes()).padStart(2, "0");
     }
 
     const games = [...(data.games || [])];
 
-    if (data.other?.trim()) {
+    if (data.other && data.other.trim()) {
         games.push(data.other);
     }
 
@@ -113,11 +115,11 @@ try {
         data.proposer || "誰か";
 
     const message =
-        `🎮 ${proposer}さんから遊びの提案\n\n` +
-        `メンバー: ${memberNames}\n` +
-        `内容: ${games.join("、")}\n` +
-        (startText ? `日時: ${startText}\n` : "") +
-        (mentionText ? `\n${mentionText}` : "");
+        "🎮 " + proposer + "さんから遊びの提案\n\n" +
+        "メンバー: " + memberNames + "\n" +
+        "内容: " + games.join("、") + "\n" +
+        (startText ? "日時: " + startText + "\n" : "") +
+        (mentionText ? "\n" + mentionText : "");
 
     const result = await fetch(SEND_WEBHOOK, {
         method: "POST",
@@ -171,7 +173,7 @@ try {
         },
         body: JSON.stringify({
             content:
-                `📩 お問い合わせ\n\n${message}`
+                "📩 お問い合わせ\n\n" + message
         })
     });
 
