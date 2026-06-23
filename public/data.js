@@ -135,8 +135,8 @@ const users = [
     },
 {
 	name: "りんか",
-        birthday: "不明",
-        hobby: "不明",
+        birthday: "06-24",
+        hobby: "将棋",
         image: "image/rinka.jpg",
         discordId: "1316778478695092235"
     }
